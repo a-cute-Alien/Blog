@@ -4,26 +4,35 @@ import com.wzc.blog.mapper.BlogInfoMapper;
 import com.wzc.blog.mapper.BlogMapper;
 import com.wzc.blog.mapper.TagMapMapper;
 import com.wzc.blog.pojo.Blog;
-import com.wzc.blog.pojo.Tag;
 import com.wzc.blog.pojo.TagMap;
-import com.wzc.blog.pojo.BlogInfo;
+import com.wzc.blog.pojo.vo.BlogInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class BlogService {
 
     @Autowired
-    BlogMapper blogMapper;
+    private BlogMapper blogMapper;
     @Autowired
-    TagMapMapper tagMapMapper;
+    private TagMapMapper tagMapMapper;
     @Autowired
-    BlogInfoMapper blogInfoMapper;
+    private BlogInfoMapper blogInfoMapper;
+    @Autowired
+    private IPService ipService;
+    @Autowired
+    RedisTemplate<String,Object> redisTemplate;
+
 
 
     public Blog getBlogById(Long id) {
@@ -63,7 +72,6 @@ public class BlogService {
         return map;
     }
     public List<Blog> getBlogsByRecommend(){
-
         return blogMapper.selectBlogByRecommend();
     }
 
@@ -130,4 +138,33 @@ public class BlogService {
         return tagMapMapper.delete(template) >= 0 && blogMapper.deleteByPrimaryKey(blog.getId()) > 0;
     }
 
+    @Scheduled(cron = "* * */2 * * ?")
+    @Transactional()
+    public boolean updateBlogView(){
+        //查询所有信息 sql效率低
+//        List<Long> idList = blogMapper.selectAll()
+//                .stream()
+//                .mapToLong((blog)->{return blog.getId();})
+//                .boxed()
+//                .collect(Collectors.toList());
+
+        //索引覆盖 不需要回表
+        List<Long> idList = blogMapper.selectAllBlogId();
+        for(long id:idList){
+            String key = "BLOG_ID:"+id;
+            Set<Object> ipList = redisTemplate.opsForSet().members(key);
+            if(!ipList.isEmpty()){
+                Set<String> ips=ipList.stream().map((o)->{return (String)o;}).collect(Collectors.toSet());
+                //更新ip表
+                ipService.addIPList(id,ips);
+                //更新view
+                int newView = ipService.getBlogView(id);
+                Blog temp = new Blog();
+                temp.setId(id);
+                temp.setViews(newView);
+                blogMapper.updateByPrimaryKeySelective(temp);
+            }
+        }
+        return true;
+    }
 }

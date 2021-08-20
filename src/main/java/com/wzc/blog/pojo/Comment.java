@@ -2,6 +2,7 @@ package com.wzc.blog.pojo;
 
 import java.util.Date;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "t_comment")
+@ApiModel("评论信息")
 public class Comment {
 
     @Id

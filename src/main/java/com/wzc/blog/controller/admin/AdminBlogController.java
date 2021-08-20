@@ -3,7 +3,7 @@ package com.wzc.blog.controller.admin;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wzc.blog.pojo.Blog;
-import com.wzc.blog.pojo.BlogInfo;
+import com.wzc.blog.pojo.vo.BlogInfo;
 import com.wzc.blog.pojo.Tag;
 import com.wzc.blog.service.BlogService;
 import com.wzc.blog.service.TagService;

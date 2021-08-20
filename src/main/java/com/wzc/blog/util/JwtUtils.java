@@ -1,14 +1,13 @@
 package com.wzc.blog.util;
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import com.wzc.blog.pojo.User;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Date;
+
 import org.joda.time.DateTime;
 
 public class JwtUtils {
@@ -114,4 +113,26 @@ public class JwtUtils {
         user.setAvatar(body.get(JwtConstans.JWT_KEY_AVATAR).toString());
         return user;
     }
+
+
+    public static boolean validateToken(String token,PublicKey publicKey) throws Exception {
+            Jws<Claims> claims = parserToken(token, publicKey);
+            if (claims.getBody().getExpiration().before(new Date())) {
+                return false;
+            }
+            return true;
+    }
+
+    public static boolean validateToken(String token,byte[] publicKey) {
+        try {
+            Jws<Claims> claims = parserToken(token, publicKey);
+            if (claims.getBody().getExpiration().before(new Date())) {
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            throw new JwtException("Expired or invalid JWT token");
+        }
+    }
+
 }

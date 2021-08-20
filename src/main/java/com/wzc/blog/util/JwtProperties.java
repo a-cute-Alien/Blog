@@ -1,6 +1,5 @@
-package com.wzc.blog.pojo;
+package com.wzc.blog.util;
 
-import com.wzc.blog.util.RsaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;

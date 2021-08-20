@@ -1,9 +1,7 @@
 package com.wzc.blog.mapper;
 
-import com.wzc.blog.pojo.BlogInfo;
-import org.apache.ibatis.annotations.Mapper;
+import com.wzc.blog.pojo.vo.BlogInfo;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

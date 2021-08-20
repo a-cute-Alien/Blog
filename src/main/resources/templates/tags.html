@@ -27,7 +27,7 @@
         </div>
 
         <div class="ui attached segment m-padded-tb-large">
-            <a href="#" th:href="@{/tags/{id}(id=${tag.id})}"
+            <a href="#" th:href="@{/blog/tag/{id}(id=${tag.id})}"
                class="ui basic left pointing large label m-margin-tb-tiny"
                th:classappend="${tag.id==activeTagId} ? 'pink'" th:each="tag : ${tags}">
                 <span th:text="${tag.name}">方法论</span>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="row">
                         <div class="column">
-                            <a href="#" th:href="@{/tags/{id}(id=${tag.id})}"
+                            <a href="#" th:href="@{/blog/tag/{id}(id=${tag.id})}"
                                class="ui basic pink left pointing label m-padded-mini m-text-thin"
                                th:each="tag : ${blogInfo.tagList}" th:text="${tag.name}">蹦蹦蹦</a>
                         </div>

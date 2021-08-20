@@ -1,8 +1,8 @@
-package com.wzc.blog.pojo;
+package com.wzc.blog.pojo.vo;
 
 
-import com.wzc.blog.pojo.Type;
-import com.wzc.blog.pojo.User;
+import com.wzc.blog.pojo.*;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel("Blog综合信息")
 public class BlogInfo {
     private Long id;
     private Blog blog;

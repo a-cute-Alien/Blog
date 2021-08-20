@@ -1,19 +1,18 @@
 package com.wzc.blog.interceptor;
 
-import com.wzc.blog.pojo.JwtProperties;
+import com.wzc.blog.util.JwtProperties;
 import com.wzc.blog.util.CookieUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Component
-public class AdminInterceptor implements HandlerInterceptor {
+//@Component
+public class TokenInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -24,7 +23,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         String token = CookieUtils.getCookieValue(request, jwtProperties.getCookieName());
         if(StringUtil.isEmpty(token))
         {
-            response.sendRedirect("/admin");
+            response.sendRedirect("/admin/index");
             return  false;
         }
         return true;
