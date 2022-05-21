@@ -1,9 +1,9 @@
 spring: #全局配置
   datasource:
-    url: jdbc:mysql://47.93.220.219:3306/blog?serverTimezone=UTC
+    url: jdbc:mysql://ip:3306/blog?serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: wzc
-    password: 954845887
+    username: username
+    username: username
   thymeleaf:
     cache: false
     encoding: UTF-8
